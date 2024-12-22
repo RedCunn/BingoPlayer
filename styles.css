@@ -1,0 +1,41 @@
+body {
+    margin: 0; /* Elimina márgenes */
+    padding: 0; /* Elimina padding */
+    height: 100vh; /* Asegura que cubra toda la altura de la ventana */
+    background-image: url('./img/background.jpeg'); /* Especifica la imagen de fondo */
+    background-size: cover; /* Hace que la imagen cubra toda el área */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    font-family: Arial, sans-serif; /* Estilo de fuente para el texto */
+    color: white; /* Color del texto */
+    text-align: center; /* Centra el texto horizontalmente */
+    display: flex; /* Habilita flexbox */
+    flex-direction: column; /* Alinea elementos en una columna */
+    justify-content: center; /* Centra verticalmente el contenido */
+}
+
+.neon-title {
+    font-family: "Playwrite CO Guides", serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 60px;
+    color: #ffffff; /* Color principal del texto */
+    text-align: center; /* Centrado del texto */
+    letter-spacing: 2px; /* Espaciado entre letras */
+    padding: 20px;
+    position: relative; /* Necesario para el efecto de sombras */
+    z-index: 1; /* Para que el texto quede encima de las sombras */
+  }
+  
+
+  /* Opcional: Sombra adicional para dar más profundidad */
+  .neon-title::after {
+    content: ''; /* No es necesario contenido */
+    position: absolute;
+    top: 0; left: 0;
+    right: 0; bottom: 0;
+    background: linear-gradient(30deg, #ec6eff, #33ff00);
+    filter: blur(50px);
+    opacity: 0.5;
+    z-index: -2;
+  }
