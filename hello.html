@@ -10,15 +10,25 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playwrite+CO+Guides&family=Playwrite+IE+Guides&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Agu+Display&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
     <main style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh;">
         <h1 class="neon-title mt-5">Bingo El Musical </h1>
         <script src="https://sdk.scdn.co/spotify-player.js"></script>
-        <button class="player btn btn-danger mt-3" style="font-size: 50px;" type="button">
-            💗
+        <div>
+            <h2 id="round"></h2>
+        </div>
+        <div class="cover">
+            <button id="revealButton" class="reveal-button">
+                ❓
+            </button>
+            <img id="coverimg" src="" alt="👽 Imagen oculta" class="hidden">
+        </div>
+        <button class="player starter btn btn-dark mt-2" type="button" style="width: 300px;">
+            <p class="pulse-effect" style="padding-top : 5px ; padding-left: 10px; padding-right: 10px;">Corran sus apuestas</p>
         </button>
     </main>
     <script type="module" src="hello.js"></script>

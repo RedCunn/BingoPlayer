@@ -1,8 +1,9 @@
 import { calling } from './utils/funk.js';
-
+import { browser } from './utils/browser.js';
 
 let accessToken = "";
-let trackId = "";
+let expiration = "";
+let deviceId = "";
 let playerInstance = null;
 
 const clientId = '8ca5ea40a1924a26bfab32d5806ee9e6';
@@ -35,17 +36,7 @@ function fetchAccessToken(code) {
         },
         body: JSON.stringify({ code: code })
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la solicitud');
-            }
-            return response.json();
-        }
-        )
-        .then(data => {
-            console.log('Datos recibidos:', data);
-            accessToken = data['accessToken'];
-        })
+        .then(data => data.json())
         .catch(error => {
             console.error('Error al obtener el token:', error);
             throw error;
@@ -60,15 +51,9 @@ function handleAuthorization() {
             .then(data => {
                 console.log('Access Token:', data.accessToken);
                 accessToken = data.accessToken;
-               
-                const devices = calling.getDevices(accessToken);
-                console.log("DEVICES : ", devices);
-    
-                calling.activateDevice(accessToken , devices[0]);
+                expiration = data.expirationDate;
 
-                const track = calling.getTrack();
-
-                calling.playTrack(playerInstance , track.trackId, accessToken );
+                browser.setCookie("auth" , accessToken , new Date(expiration));
             })
             .catch(error => {
                 console.error('Error al obtener el token:', error);
@@ -78,12 +63,26 @@ function handleAuthorization() {
     }
 }
 
+const activateDevice = async () => {
+    try {
+        const devices = await calling.getDevices(browser.eatCookie("auth"));
+        deviceId = devices[0].id;
+        console.log("DEVICE ID : ", deviceId)
+        await calling.activateDevice(browser.eatCookie("auth"), deviceId);
+    } catch (error) {
+        console.log('Error activating device', error);
+    }
+}
+
 
 if (!getCodeFromUrl()) {
     authorizeSpotify();
-} else {
-    handleAuthorization();
 }
+
+if (browser.eatCookie("auth") === "") {
+    handleAuthorization();
+} 
+
 
 window.onSpotifyWebPlaybackSDKReady = () => {
     console.log('Spotify SDK listo');
@@ -91,8 +90,8 @@ window.onSpotifyWebPlaybackSDKReady = () => {
     // Crear el reproductor
     const player = new Spotify.Player({
         name: 'Mi Bingo Musical',
-        getOAuthToken: cb => { cb(accessToken); },
-        volume: 0.5
+        getOAuthToken: cb => { cb(browser.eatCookie("auth")); },
+        volume: 1
     });
 
     // Manejo de eventos de errores
@@ -117,17 +116,44 @@ window.onSpotifyWebPlaybackSDKReady = () => {
     });
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    const playerButton = document.querySelector('.player');
+activateDevice();
 
-    playerButton.addEventListener('click', () => {
+
+document.addEventListener('DOMContentLoaded', () => {
+    
+    const roundHeading = document.querySelector('#round'); 
+    const coverImage = document.querySelector('#coverimg');
+    const playerButton = document.querySelector('.player');
+    const cover = document.querySelector('.cover');
+    const revealButton = document.querySelector('#revealButton');
+
+    playerButton.addEventListener('click', async () => {
         if (playerInstance) {
-            calling.playTrack(playerInstance, trackId, accessToken);
+            const track = await calling.getTrack();
+            console.log("Track desde calling: " + track);
+
+            if(track.round > 0){
+                coverImage.style.display = 'none';
+                revealButton.style.display = 'block';
+                roundHeading.textContent = "Ronda 💃 " + (track.round + 1 );
+                coverImage.src = track.imageUrl;
+            }
+
+            await calling.playTrack(deviceId, track, browser.eatCookie("auth"));
+
+
+            setTimeout(async () => {
+                await calling.pauseTrack(deviceId, browser.eatCookie("auth"));
+            }, 10000); 
+
         } else {
             console.error('El reproductor aún no está listo');
         }
     });
+
+    revealButton.addEventListener('click', () => {
+        coverImage.classList.remove('hidden');
+        coverImage.style.display = 'block';
+        revealButton.style.display = 'none';
+    });
 });
-
-
-

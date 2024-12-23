@@ -1,41 +1,132 @@
 body {
-    margin: 0; /* Elimina márgenes */
-    padding: 0; /* Elimina padding */
-    height: 100vh; /* Asegura que cubra toda la altura de la ventana */
-    background-image: url('./img/background.jpeg'); /* Especifica la imagen de fondo */
-    background-size: cover; /* Hace que la imagen cubra toda el área */
-    background-position: center; /* Centra la imagen */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-    font-family: Arial, sans-serif; /* Estilo de fuente para el texto */
-    color: white; /* Color del texto */
-    text-align: center; /* Centra el texto horizontalmente */
-    display: flex; /* Habilita flexbox */
-    flex-direction: column; /* Alinea elementos en una columna */
-    justify-content: center; /* Centra verticalmente el contenido */
+  margin: 0;
+  /* Elimina márgenes */
+  padding: 0;
+  /* Elimina padding */
+  height: 100vh;
+  /* Asegura que cubra toda la altura de la ventana */
+  background-image: url('./img/background.jpeg');
+  /* Especifica la imagen de fondo */
+  background-size: cover;
+  /* Hace que la imagen cubra toda el área */
+  background-position: center;
+  /* Centra la imagen */
+  background-repeat: no-repeat;
+  /* Evita que la imagen se repita */
+  font-family: Arial, sans-serif;
+  /* Estilo de fuente para el texto */
+  color: white;
+  /* Color del texto */
+  text-align: center;
+  /* Centra el texto horizontalmente */
+  display: flex;
+  /* Habilita flexbox */
+  flex-direction: column;
+  /* Alinea elementos en una columna */
+  justify-content: center;
+  /* Centra verticalmente el contenido */
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.pulse-effect {
+  font-size: 20px;
+  animation: pulse 1.5s infinite;
+}
+
+.starter {
+  color: #ece800;
+}
+
+.starter:hover {
+  color: #11ff00;
 }
 
 .neon-title {
-    font-family: "Playwrite CO Guides", serif;
-    font-weight: 600;
-    font-style: normal;
-    font-size: 60px;
-    color: #ffffff; /* Color principal del texto */
-    text-align: center; /* Centrado del texto */
-    letter-spacing: 2px; /* Espaciado entre letras */
-    padding: 20px;
-    position: relative; /* Necesario para el efecto de sombras */
-    z-index: 1; /* Para que el texto quede encima de las sombras */
-  }
-  
+  font-family: "Playwrite CO Guides", serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 60px;
+  color: #ffffff;
+  /* Color principal del texto */
+  text-align: center;
+  /* Centrado del texto */
+  letter-spacing: 2px;
+  /* Espaciado entre letras */
+  padding: 20px;
+  position: relative;
+  /* Necesario para el efecto de sombras */
+  z-index: 1;
+  /* Para que el texto quede encima de las sombras */
+}
 
-  /* Opcional: Sombra adicional para dar más profundidad */
-  .neon-title::after {
-    content: ''; /* No es necesario contenido */
-    position: absolute;
-    top: 0; left: 0;
-    right: 0; bottom: 0;
-    background: linear-gradient(30deg, #ec6eff, #33ff00);
-    filter: blur(50px);
-    opacity: 0.5;
-    z-index: -2;
-  }
+
+/* Opcional: Sombra adicional para dar más profundidad */
+.neon-title::after {
+  content: '';
+  /* No es necesario contenido */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(30deg, #ec6eff, #33ff00);
+  filter: blur(50px);
+  opacity: 0.5;
+  z-index: -2;
+}
+
+#round {
+  color: red;
+}
+
+.cover {
+  position: relative;
+  width: 300px;
+  height: 300px;
+}
+
+.cover img {
+  width: 100%;
+  height: auto;
+  display: none;
+}
+
+.cover img.hidden {
+  display: none;
+}
+
+.reveal-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  padding: 10px 20px;
+  width: 300px;
+  height: 300px;
+  background-color: #303943;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 25px;
+}
+
+.reveal-button:hover {
+  background-color: #0056b3;
+}
