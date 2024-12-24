@@ -31,7 +31,21 @@
             <p class="pulse-effect" style="padding-top : 5px ; padding-left: 10px; padding-right: 10px;">Corran sus apuestas</p>
         </button>
     </main>
+      <!-- Botón fijo en la esquina inferior izquierda -->
+      <button id="openModal" class="btn btn-danger floating-button">📃</button>
+
+      <!-- Modal -->
+      <div id="modal" class="modal hidden">
+          <div class="modal-content">
+              <span id="closeModal" class="close">&times;</span>
+              <h2>Canciones sonadas</h2>
+              <ul id="dynamicList"></ul>
+          </div>
+      </div>
+
     <script type="module" src="hello.js"></script>
+
+    
 </body>
 
 </html>

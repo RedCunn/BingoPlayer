@@ -133,6 +133,28 @@ export const calling = {
         } catch (error) {
             console.error('Error al pausar pista', error);
         }
+    },
+    getPlayedTracks : async () => {
+        try {
+            const response = await fetch('http://192.168.0.163:8080/playedSongs', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Error en la solicitud getPlayedTracks');
+            }
+
+            const data = await response.json();
+
+            return data;
+
+        } catch (error) {
+            console.error('Error al cargar la lista de canciones:', error);
+            return null;
+        }
     }
 
 }

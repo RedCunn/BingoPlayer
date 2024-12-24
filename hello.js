@@ -53,7 +53,7 @@ function handleAuthorization() {
                 accessToken = data.accessToken;
                 expiration = data.expirationDate;
 
-                browser.setCookie("auth" , accessToken , new Date(expiration));
+                browser.setCookie("auth", accessToken, new Date(expiration));
             })
             .catch(error => {
                 console.error('Error al obtener el token:', error);
@@ -81,7 +81,7 @@ if (!getCodeFromUrl()) {
 
 if (browser.eatCookie("auth") === "") {
     handleAuthorization();
-} 
+}
 
 
 window.onSpotifyWebPlaybackSDKReady = () => {
@@ -118,10 +118,21 @@ window.onSpotifyWebPlaybackSDKReady = () => {
 
 activateDevice();
 
+const createList = (data)  => {
+    const listContainer = document.getElementById('dynamicList');
+    listContainer.innerHTML = ''; 
+
+    data.songs.forEach(element => {
+        const listItem = document.createElement('li');
+        listItem.textContent = element;
+        listContainer.appendChild(listItem); 
+    });
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
-    
-    const roundHeading = document.querySelector('#round'); 
+
+    const roundHeading = document.querySelector('#round');
     const coverImage = document.querySelector('#coverimg');
     const playerButton = document.querySelector('.player');
     const cover = document.querySelector('.cover');
@@ -131,11 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (playerInstance) {
             const track = await calling.getTrack();
             console.log("Track desde calling: " + track);
-
-            if(track.round > 0){
+            roundHeading.textContent = "Ronda 💃 " + (track.round + 1);
+            if (track.round > 0) {
                 coverImage.style.display = 'none';
                 revealButton.style.display = 'block';
-                roundHeading.textContent = "Ronda 💃 " + (track.round + 1 );
                 coverImage.src = track.imageUrl;
             }
 
@@ -144,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setTimeout(async () => {
                 await calling.pauseTrack(deviceId, browser.eatCookie("auth"));
-            }, 10000); 
+            }, 10000);
 
         } else {
             console.error('El reproductor aún no está listo');
@@ -155,5 +165,30 @@ document.addEventListener('DOMContentLoaded', () => {
         coverImage.classList.remove('hidden');
         coverImage.style.display = 'block';
         revealButton.style.display = 'none';
+    });
+
+    // Variables del modal
+    const modal = document.getElementById('modal');
+    const openModalButton = document.getElementById('openModal');
+    const closeModalButton = document.getElementById('closeModal');
+
+    // Abrir el modal
+    openModalButton.addEventListener('click', async () => {
+        const playedSongs = await calling.getPlayedTracks();
+        console.log("Played songs" + JSON.stringify(playedSongs, null, 2));
+        await createList(playedSongs);
+        modal.style.display = 'block';
+    });
+
+    // Cerrar el modal
+    closeModalButton.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // Cerrar el modal al hacer clic fuera de él
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
     });
 });
